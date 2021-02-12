@@ -1,0 +1,67 @@
+---
+title: "Analysis"
+author: "Damian C Bourne"
+date: "09/02/2021"
+output: html_document
+---
+Import the Sequences.csv file.
+```{r}
+library(dplyr) #loading dplyr 
+library(stringr) #loading stringr
+
+dat <- read.csv("Sequences.csv") #loading my data 
+```
+Count the number of each base pair (A, T, C and G), in each of the three sequences. (Hint: do not include any characters from the header, use the nucleotide sequence only; you MIGHT use gsub(), nchar(), for loops, if/then statements)
+```{r}
+seq <- dat$Sequence
+ for(i in 1:length(dat$X)){
+  seq[i] <- dat$Sequence[i] #this portion isolates the sequence 
+  nucleotides <- str_count(seq[i], pattern =c("A", "T", "C", "G")) #counting the number of "A", "T", "C", and "G"
+  print(nucleotides)#printing the number of nucleotides to the console 
+}
+```
+Print out each sequence.
+```{r}
+dat$Sequence #printing out each sequence  
+```
+Print out the number of each nucleotide as a table for each of the three sequences.
+```{r}
+TableSeq <- c(154, 82, 131, 114, 155, 81, 131, 114, 154, 81, 131, 115) #creating a vector of nucleotide lengths 
+NucleotideNumb <- matrix(TableSeq, ncol = 4, byrow = TRUE) #turning the vector into a matrix 
+colnames(NucleotideNumb) <- c("A", "C", "G", "T") #naming columns for the table 
+rownames(NucleotideNumb) <- c("HQ433694.1", "HQ433692.1", "HQ433691.1") #naming rows for the table 
+NucleotideNumb <- as.table(NucleotideNumb) #creating the table 
+print(NucleotideNumb) #printing the table to the console 
+```
+Include an image of a bacteria from the internet, and a link to the Wikipedia page about Borrelia burgdorferi
+
+[*Borrelia burgdorferi*](https://en.wikipedia.org/wiki/Borrelia_burgdorferi)
+![](/Users/damianbourne/Desktop/Queens/Academics/Undergrad/4th Year /Semester 2/BIOL432/Assignments/Rentrez/Borrelia.jpg)
+
+Calculate GC Content (% of nucleotides that are G or C) and create a final table showing GC content for each sequence ID
+```{r}
+GCSeq1 <- round(((NucleotideNumb[1,2] + NucleotideNumb[1,3])/sum(NucleotideNumb[1,]))*100, digits = 1) #calculating the GC content for the first sequence 
+GCSeq2 <- round(((NucleotideNumb[2,2] + NucleotideNumb[2,3])/sum(NucleotideNumb[2,]))*100, digits = 1) #calculating the GC content for the second sequence 
+GCSeq3 <- round(((NucleotideNumb[3,2] + NucleotideNumb[3,3])/sum(NucleotideNumb[3,]))*100, digits = 1) #calcualting the GC content for the third sequence 
+GCSeq1 <- paste(GCSeq1,"%") #adding a "%" sign to the GC content
+GCSeq2 <- paste(GCSeq2,"%") #adding a "%" sign to the GC content
+GCSeq3 <- paste(GCSeq3,"%") #adding a "%" sign to the GC content
+
+GCcontent <- c(GCSeq1, GCSeq2, GCSeq3) #creating a vector of GC content
+seqID <- c("HQ433694.1", "HQ433692.1", "HQ433691.1") #creating a vector of sequence IDs
+GCContentTable <- matrix(GCcontent, ncol = 1) #turning the vector into a matrix
+rownames(GCContentTable) <- seqID #naming rows 
+colnames(GCContentTable) <- c("GC Content") #naming the column 
+GCContentTable <- as.table(GCContentTable) #creating the table 
+GCContentTable #printing the table to the console 
+```
+
+My github respository can be found [here](https://github.com/damianbourne/Rentrez.git)
+
+
+
+
+
+
+
+
